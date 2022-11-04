@@ -1,0 +1,14 @@
+# Multiclass Covid-19 segmentation tensorflow
+
+# Requirements
+POSIX mandatory utilities
+Make
+Docker (>= 19.03 for NVIDIA Container Toolkit)
+NVIDIA Container Toolkit (Optional)
+
+# Preparation
+git clone https://github.com/pbizopoulos/multiclass-covid-19-segmentation-tensorflow
+cd multiclass-covid-19-segmentation-tensorflow/
+
+# Usage
+make help			# Show help for python.
