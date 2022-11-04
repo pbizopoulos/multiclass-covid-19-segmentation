@@ -78,23 +78,27 @@ def data_generator_3(index_range):
             with ZipFile(zip_file_path, 'r') as zip_file:
                 zip_file.extractall(join('bin', file_name))
     images = np.array([]).reshape(512, 512, 0)
-    for file_path in glob(join('bin', file_name_list[0], '*.nii.gz')):
+    for file_path in glob(join('bin', 'COVID-19-CT-Seg_20cases', '*.nii.gz')):
         images_ = nib.load(file_path)
         images_ = np.resize(images_.get_fdata(), (512, 512, images_.shape[-1]))
         images = np.concatenate((images, images_), 2)
     images = images[..., index_range]
     mask_lesions = np.array([]).reshape(512, 512, 0)
-    for file_path in glob(join('bin', file_name_list[1], '*.nii.gz')):
+    for file_path in glob(join('bin', 'Infection_Mask', '*.nii.gz')):
         mask_lesions_ = nib.load(file_path)
         mask_lesions_ = np.resize(mask_lesions_.get_fdata(), (512, 512, mask_lesions_.shape[-1]))
         mask_lesions = np.concatenate((mask_lesions, mask_lesions_), 2)
     mask_lesions = mask_lesions[..., index_range]
     mask_lungs = np.array([]).reshape(512, 512, 0)
-    for file_path in glob(join('bin', file_name_list[2], '*.nii.gz')):
+    for file_path in glob(join('bin', 'Lung_Mask', '*.nii.gz')):
         mask_lungs_ = nib.load(file_path)
         mask_lungs_ = np.resize(mask_lungs_.get_fdata(), (512, 512, mask_lungs.shape[-1]))
         mask_lungs = np.concatenate((mask_lungs, mask_lungs_), 2)
     mask_lungs = mask_lungs[..., index_range]
+    mask_lungs[mask_lungs == 2] = 1
+    masks = mask_lungs
+    masks[mask_lesions == 1] = 2
+    return (images, masks)
 
 
 def get_model(classes_num, img_size):
