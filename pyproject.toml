@@ -1,0 +1,8 @@
+[project]
+name = "None"
+version = "0"
+dependencies = [
+	"gdown==4.5.3",
+	"nibabel==4.0.2",
+	"tensorflowjs==4.0.0",
+]
