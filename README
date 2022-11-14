@@ -6,9 +6,7 @@ Make
 Docker (>= 19.03 for NVIDIA Container Toolkit)
 NVIDIA Container Toolkit (Optional)
 
-# Preparation
+# Build
 git clone https://github.com/pbizopoulos/multiclass-covid-19-segmentation-tensorflow
 cd multiclass-covid-19-segmentation-tensorflow/
-
-# Usage
-make help			# Show help for python.
+make DEBUG=0
