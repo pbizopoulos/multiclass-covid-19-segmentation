@@ -1,6 +1,6 @@
 [project]
-name = "None"
-version = "0"
+name = "UNKNOWN"
+version = "0.0.0"
 dependencies = [
 	"gdown==4.5.3",
 	"nibabel==4.0.2",
