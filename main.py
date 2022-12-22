@@ -1,19 +1,28 @@
+import os
 from glob import glob
-from keras.utils.np_utils import to_categorical
 from os import environ
 from os.path import join
 from shutil import move, rmtree
-from tensorflow import keras
-from tensorflow.keras.layers import BatchNormalization, Conv2D, Conv2DTranspose, Dropout, Input, MaxPooling2D, concatenate
-from tensorflow.keras.models import Model
 from zipfile import ZipFile
+
 import gdown
 import nibabel as nib
 import numpy as np
-import os
 import requests
 import tensorflow as tf
 import tensorflowjs as tfjs
+from keras.utils.np_utils import to_categorical
+from tensorflow import keras
+from tensorflow.keras.layers import (
+    BatchNormalization,
+    Conv2D,
+    Conv2DTranspose,
+    Dropout,
+    Input,
+    MaxPooling2D,
+    concatenate,
+)
+from tensorflow.keras.models import Model
 
 
 def data_generator_1(index_range):
@@ -164,8 +173,7 @@ def get_model(classes_num, img_size):
     c9 = Dropout(dropout)(c9)
     c9 = Conv2D(base_filters, (3, 3), activation=activation, kernel_initializer=initializer, padding='same')(c9)
     output_layer = Conv2D(classes_num, (1, 1), activation='softmax')(c9)
-    model = Model(inputs=[input_layer], outputs=[output_layer])
-    return model
+    return Model(inputs=[input_layer], outputs=[output_layer])
 
 
 def main():
