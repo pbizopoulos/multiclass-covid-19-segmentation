@@ -1,8 +1,8 @@
 # Multiclass Covid-19 segmentation tensorflow
 
 # Requirements
-POSIX mandatory utilities
-Make
+POSIX shell & utilities
+Git
 Docker (>= 19.03 for NVIDIA Container Toolkit)
 NVIDIA Container Toolkit (Optional)
 

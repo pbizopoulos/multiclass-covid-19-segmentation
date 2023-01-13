@@ -81,7 +81,7 @@ def data_generator_3(index_range):
     for url, file_name in zip(url_list, file_name_list):
         zip_file_path = join('bin', f'{file_name}.zip')
         if not os.path.isfile(zip_file_path):
-            response = requests.get(url)
+            response = requests.get(url, timeout=5)
             with open(zip_file_path, 'wb') as file:
                 file.write(response.content)
             with ZipFile(zip_file_path, 'r') as zip_file:
