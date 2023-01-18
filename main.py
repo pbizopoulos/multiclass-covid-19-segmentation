@@ -1,7 +1,7 @@
 import os
 from glob import glob
 from os import environ
-from os.path import isfile, join
+from os.path import exists, isfile, join
 from shutil import move, rmtree
 from zipfile import ZipFile
 
@@ -199,12 +199,12 @@ def main():
     model = get_model(classes_num, img_size)
     model.compile(optimizer=keras.optimizers.Adam(learning_rate=0.001), loss='categorical_crossentropy', metrics='accuracy')
     model.fit(train_dataset, validation_data=validation_dataset, epochs=epochs_num)
-    if os.path.exists(join('bin', 'tfjs')):
+    if exists(join('bin', 'tfjs')):
         rmtree(join('bin', 'tfjs'))
     os.makedirs(join('bin', 'tfjs'), exist_ok=True)
     tfjs.converters.save_keras_model(model, join('bin', 'tfjs'))
     if environ['DEBUG'] != '1':
-        if os.path.exists('dist'):
+        if exists('dist'):
             rmtree('dist')
         move(join('bin', 'tfjs'), 'dist')
 
