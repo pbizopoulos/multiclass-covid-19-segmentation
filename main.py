@@ -25,10 +25,10 @@ from tensorflow.keras.layers import (
 from tensorflow.keras.models import Model
 
 
-def data_generator_1(index_range):
-    url_list = ['https://drive.google.com/uc?id=1SJoMelgRqb0EuqlTuq6dxBWf2j9Kno8S', 'https://drive.google.com/uc?id=1MEqpbpwXjrLrH42DqDygWeSkDq0bi92f', 'https://drive.google.com/uc?id=1zj4N_KV0LBko1VSQ7FPZ38eaEGNU0K6-']
-    file_name_list = ['tr_im.nii.gz', 'tr_mask.nii.gz', 'tr_lungmasks_updated.nii.gz']
-    for url, file_name in zip(url_list, file_name_list):
+def data_generator_1(index_range: range) -> tuple:
+    urls = ['https://drive.google.com/uc?id=1SJoMelgRqb0EuqlTuq6dxBWf2j9Kno8S', 'https://drive.google.com/uc?id=1MEqpbpwXjrLrH42DqDygWeSkDq0bi92f', 'https://drive.google.com/uc?id=1zj4N_KV0LBko1VSQ7FPZ38eaEGNU0K6-']
+    file_names = ['tr_im.nii.gz', 'tr_mask.nii.gz', 'tr_lungmasks_updated.nii.gz']
+    for url, file_name in zip(urls, file_names):
         if not isfile(join('bin', file_name)):
             gdown.download(url, join('bin', file_name), quiet=False)
     images_file_path = join('bin', 'tr_im.nii.gz')
@@ -48,25 +48,25 @@ def data_generator_1(index_range):
     return (images, masks)
 
 
-def data_generator_2(index_volume):
+def data_generator_2(index_volume: int) -> tuple:
     index_volume = 0
-    url_list = ['https://drive.google.com/uc?id=1ruTiKdmqhqdbE9xOEmjQGing76nrTK2m', 'https://drive.google.com/uc?id=1gVuDwFeAGa6jIVX9MeJV5ByIHFpOo5Bp', 'https://drive.google.com/uc?id=1MIp89YhuAKh4as2v_5DUoExgt6-y3AnH']
-    file_name_list = ['rp_im.zip', 'rp_msk.zip', 'rp_lung_msk.zip']
-    for url, file_name in zip(url_list, file_name_list):
+    urls = ['https://drive.google.com/uc?id=1ruTiKdmqhqdbE9xOEmjQGing76nrTK2m', 'https://drive.google.com/uc?id=1gVuDwFeAGa6jIVX9MeJV5ByIHFpOo5Bp', 'https://drive.google.com/uc?id=1MIp89YhuAKh4as2v_5DUoExgt6-y3AnH']
+    file_names = ['rp_im.zip', 'rp_msk.zip', 'rp_lung_msk.zip']
+    for url, file_name in zip(urls, file_names):
         zip_file_path = join('bin', file_name)
         if not isfile(zip_file_path):
             gdown.download(url, zip_file_path, quiet=False)
             with ZipFile(zip_file_path, 'r') as zip_file:
                 zip_file.extractall('bin')
-    image_file_path_list = sorted(glob(join('bin', 'rp_im/*.nii.gz')))
-    images = nib.load(image_file_path_list[index_volume])
+    image_file_paths = sorted(glob(join('bin', 'rp_im/*.nii.gz')))
+    images = nib.load(image_file_paths[index_volume])
     images = images.get_fdata()
     images = np.moveaxis(images, -1, 0)
-    mask_lesions_file_path_list = sorted(glob(join('bin', 'rp_msk/*.nii.gz')))
-    mask_lesions = nib.load(mask_lesions_file_path_list[index_volume])
+    mask_lesions_file_paths = sorted(glob(join('bin', 'rp_msk/*.nii.gz')))
+    mask_lesions = nib.load(mask_lesions_file_paths[index_volume])
     mask_lesions = mask_lesions.get_fdata()
-    mask_lungs_file_path_list = sorted(glob(join('bin', 'rp_lung_msk/*.nii.gz')))
-    mask_lungs = nib.load(mask_lungs_file_path_list[index_volume])
+    mask_lungs_file_paths = sorted(glob(join('bin', 'rp_lung_msk/*.nii.gz')))
+    mask_lungs = nib.load(mask_lungs_file_paths[index_volume])
     mask_lungs = mask_lungs.get_fdata()
     mask_lungs[mask_lungs == 2] = 1
     masks = mask_lungs
@@ -75,10 +75,10 @@ def data_generator_2(index_volume):
     return (images, masks)
 
 
-def data_generator_3(index_range):
-    url_list = ['https://zenodo.org/record/3757476/files/COVID-19-CT-Seg_20cases.zip?download=1', 'https://zenodo.org/record/3757476/files/Infection_Mask.zip?download=1', 'https://zenodo.org/record/3757476/files/Lung_Mask.zip?download=1']
-    file_name_list = ['COVID-19-CT-Seg_20cases', 'Infection_Mask', 'Lung_Mask']
-    for url, file_name in zip(url_list, file_name_list):
+def data_generator_3(index_range: range) -> tuple:
+    urls = ['https://zenodo.org/record/3757476/files/COVID-19-CT-Seg_20cases.zip?download=1', 'https://zenodo.org/record/3757476/files/Infection_Mask.zip?download=1', 'https://zenodo.org/record/3757476/files/Lung_Mask.zip?download=1']
+    file_names = ['COVID-19-CT-Seg_20cases', 'Infection_Mask', 'Lung_Mask']
+    for url, file_name in zip(urls, file_names):
         zip_file_path = join('bin', f'{file_name}.zip')
         if not isfile(zip_file_path):
             response = requests.get(url, timeout=60)
@@ -110,7 +110,7 @@ def data_generator_3(index_range):
     return (images, masks)
 
 
-def get_model(classes_num, img_size):
+def get_model(classes_num: int, img_size: tuple) -> Model:
     dropout = 0.4
     activation = 'relu'
     initializer = 'he_normal'
@@ -176,7 +176,7 @@ def get_model(classes_num, img_size):
     return Model(inputs=[input_layer], outputs=[output_layer])
 
 
-def main():
+def main() -> None:
     tf.keras.utils.set_random_seed(1)
     tf.config.experimental.enable_op_determinism()
     epochs_num = 100
@@ -209,14 +209,14 @@ def main():
         move(join('bin', 'tfjs'), 'dist')
 
 
-def preprocess(images, masks):
+def preprocess(images: tf.float32, masks: tf.float32) -> tuple:
     images, masks = tf.numpy_function(process_image_mask, [images, masks], [tf.float32, tf.float32])
     images.set_shape([256, 256, 1])
     masks.set_shape([256, 256, 3])
     return (images, masks)
 
 
-def process_image_mask(image, mask):
+def process_image_mask(image: tf.float32, mask: tf.float32) -> tuple:
     image = tf.image.resize(image[..., tf.newaxis], (256, 256))
     image = image / 4095
     mask = tf.image.resize(mask[..., tf.newaxis], (256, 256), method='nearest')
