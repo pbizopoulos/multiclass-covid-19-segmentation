@@ -24,7 +24,7 @@ from tensorflow.keras.layers import (
 from tensorflow.keras.models import Model
 
 
-def data_generator_1(index_range: range) -> tuple:
+def data_generator_1(index_range: range) -> tuple: # type: ignore[type-arg]
     urls = ['https://drive.google.com/uc?id=1SJoMelgRqb0EuqlTuq6dxBWf2j9Kno8S', 'https://drive.google.com/uc?id=1MEqpbpwXjrLrH42DqDygWeSkDq0bi92f', 'https://drive.google.com/uc?id=1zj4N_KV0LBko1VSQ7FPZ38eaEGNU0K6-']
     file_names = ['tr_im.nii.gz', 'tr_mask.nii.gz', 'tr_lungmasks_updated.nii.gz']
     for url, file_name in zip(urls, file_names):
@@ -48,7 +48,7 @@ def data_generator_1(index_range: range) -> tuple:
     return (images, masks)
 
 
-def data_generator_2(index_volume: int) -> tuple:
+def data_generator_2(index_volume: int) -> tuple: # type: ignore[type-arg]
     index_volume = 0
     urls = ['https://drive.google.com/uc?id=1ruTiKdmqhqdbE9xOEmjQGing76nrTK2m', 'https://drive.google.com/uc?id=1gVuDwFeAGa6jIVX9MeJV5ByIHFpOo5Bp', 'https://drive.google.com/uc?id=1MIp89YhuAKh4as2v_5DUoExgt6-y3AnH']
     file_names = ['rp_im.zip', 'rp_msk.zip', 'rp_lung_msk.zip']
@@ -75,7 +75,7 @@ def data_generator_2(index_volume: int) -> tuple:
     return (images, masks)
 
 
-def data_generator_3(index_range: range) -> tuple:
+def data_generator_3(index_range: range) -> tuple: # type: ignore[type-arg]
     urls = ['https://zenodo.org/record/3757476/files/COVID-19-CT-Seg_20cases.zip?download=1', 'https://zenodo.org/record/3757476/files/Infection_Mask.zip?download=1', 'https://zenodo.org/record/3757476/files/Lung_Mask.zip?download=1']
     file_names = ['COVID-19-CT-Seg_20cases', 'Infection_Mask', 'Lung_Mask']
     for url, file_name in zip(urls, file_names):
@@ -110,7 +110,7 @@ def data_generator_3(index_range: range) -> tuple:
     return (images, masks)
 
 
-def get_model(classes_num: int, img_size: tuple) -> Model:
+def get_model(classes_num: int, img_size: tuple) -> Model: # type: ignore[type-arg]
     dropout = 0.4
     activation = 'relu'
     initializer = 'he_normal'
@@ -211,14 +211,14 @@ def main() -> None:
         move('bin/tfjs', 'dist')
 
 
-def preprocess(images: tf.float32, masks: tf.float32) -> tuple:
+def preprocess(images: tf.float32, masks: tf.float32) -> tuple: # type: ignore[type-arg]
     images, masks = tf.numpy_function(process_image_mask, [images, masks], [tf.float32, tf.float32])
     images.set_shape([256, 256, 1])
     masks.set_shape([256, 256, 3])
     return (images, masks)
 
 
-def process_image_mask(image: tf.float32, mask: tf.float32) -> tuple:
+def process_image_mask(image: tf.float32, mask: tf.float32) -> tuple: # type: ignore[type-arg]
     image = tf.image.resize(image[..., tf.newaxis], (256, 256))
     image = image / 4095
     mask = tf.image.resize(mask[..., tf.newaxis], (256, 256), method='nearest')
