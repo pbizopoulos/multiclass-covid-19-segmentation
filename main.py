@@ -27,7 +27,7 @@ from tensorflow.keras.models import Model
 def data_generator_1(index_range: range) -> tuple: # type: ignore[type-arg]
     urls = ['https://drive.google.com/uc?id=1SJoMelgRqb0EuqlTuq6dxBWf2j9Kno8S', 'https://drive.google.com/uc?id=1MEqpbpwXjrLrH42DqDygWeSkDq0bi92f', 'https://drive.google.com/uc?id=1zj4N_KV0LBko1VSQ7FPZ38eaEGNU0K6-']
     file_names = ['tr_im.nii.gz', 'tr_mask.nii.gz', 'tr_lungmasks_updated.nii.gz']
-    for url, file_name in zip(urls, file_names):
+    for url, file_name in zip(urls, file_names): # noqa: B905
         file_name_path = Path(f'bin/{file_name}')
         if not file_name_path.is_file():
             gdown.download(url, file_name_path.as_posix(), quiet=False)
@@ -52,7 +52,7 @@ def data_generator_2(index_volume: int) -> tuple: # type: ignore[type-arg]
     index_volume = 0
     urls = ['https://drive.google.com/uc?id=1ruTiKdmqhqdbE9xOEmjQGing76nrTK2m', 'https://drive.google.com/uc?id=1gVuDwFeAGa6jIVX9MeJV5ByIHFpOo5Bp', 'https://drive.google.com/uc?id=1MIp89YhuAKh4as2v_5DUoExgt6-y3AnH']
     file_names = ['rp_im.zip', 'rp_msk.zip', 'rp_lung_msk.zip']
-    for url, file_name in zip(urls, file_names):
+    for url, file_name in zip(urls, file_names): # noqa: B905
         zip_file_path = Path(f'bin/{file_name}')
         if not zip_file_path.is_file():
             gdown.download(url, zip_file_path.as_posix(), quiet=False)
@@ -78,7 +78,7 @@ def data_generator_2(index_volume: int) -> tuple: # type: ignore[type-arg]
 def data_generator_3(index_range: range) -> tuple: # type: ignore[type-arg]
     urls = ['https://zenodo.org/record/3757476/files/COVID-19-CT-Seg_20cases.zip?download=1', 'https://zenodo.org/record/3757476/files/Infection_Mask.zip?download=1', 'https://zenodo.org/record/3757476/files/Lung_Mask.zip?download=1']
     file_names = ['COVID-19-CT-Seg_20cases', 'Infection_Mask', 'Lung_Mask']
-    for url, file_name in zip(urls, file_names):
+    for url, file_name in zip(urls, file_names): # noqa: B905
         zip_file_path = Path(f'bin/{file_name}.zip')
         if not zip_file_path.is_file():
             response = requests.get(url, timeout=60)
