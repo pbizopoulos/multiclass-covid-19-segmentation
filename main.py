@@ -41,7 +41,7 @@ def data_generator_1(index_range: range) -> tuple: # type: ignore[type-arg]
     mask_lungs_file_path = 'bin/tr_lungmasks_updated.nii.gz'
     mask_lungs = nib.load(mask_lungs_file_path) # type: ignore[attr-defined]
     mask_lungs = mask_lungs.get_fdata()[..., index_range]
-    mask_lungs[mask_lungs == 2] = 1 # noqa: PLR2004
+    mask_lungs[mask_lungs == 2] = 1
     masks = mask_lungs
     masks[mask_lesions == 1] = 2
     masks = np.moveaxis(masks, -1, 0)
@@ -68,7 +68,7 @@ def data_generator_2(index_volume: int) -> tuple: # type: ignore[type-arg]
     mask_lungs_file_paths = sorted(glob('bin/rp_lung_msk/*.nii.gz'))
     mask_lungs = nib.load(mask_lungs_file_paths[index_volume]) # type: ignore[attr-defined]
     mask_lungs = mask_lungs.get_fdata()
-    mask_lungs[mask_lungs == 2] = 1 # noqa: PLR2004
+    mask_lungs[mask_lungs == 2] = 1
     masks = mask_lungs
     masks[mask_lesions == 1] = 2
     masks = np.moveaxis(masks, -1, 0)
@@ -104,13 +104,13 @@ def data_generator_3(index_range: range) -> tuple: # type: ignore[type-arg]
         mask_lungs_ = np.resize(mask_lungs_.get_fdata(), (512, 512, mask_lungs.shape[-1]))
         mask_lungs = np.concatenate((mask_lungs, mask_lungs_), 2)
     mask_lungs = mask_lungs[..., index_range]
-    mask_lungs[mask_lungs == 2] = 1 # noqa: PLR2004
+    mask_lungs[mask_lungs == 2] = 1
     masks = mask_lungs
     masks[mask_lesions == 1] = 2
     return (images, masks)
 
 
-def get_model(classes_num: int, img_size: tuple) -> Model: # type: ignore[type-arg] # noqa: PLR0915
+def get_model(classes_num: int, img_size: tuple) -> Model: # type: ignore[type-arg]
     dropout = 0.4
     activation = 'relu'
     initializer = 'he_normal'
