@@ -1,4 +1,4 @@
-FROM tensorflow/tensorflow:2.11.0-gpu
+FROM tensorflow/tensorflow:2.12.0-gpu
 ENV HOME=/usr/src/app/bin
 ENV PYTHONDONTWRITEBYTECODE=1
 WORKDIR /usr/src/app
