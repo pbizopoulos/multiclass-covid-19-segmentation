@@ -3,8 +3,8 @@ name = "UNKNOWN"
 version = "0.0.0"
 dependencies = [
 	"gdown==4.7.1",
-	"nibabel==5.0.1",
-	"tensorflowjs==4.3.0",
+	"nibabel==5.1.0",
+	"tensorflowjs==4.4.0",
 ]
 
 [project.optional-dependencies]
