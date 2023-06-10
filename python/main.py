@@ -305,6 +305,32 @@ def get_model(  # noqa: PLR0915
     return Model(inputs=[input_layer], outputs=[output_layer])
 
 
+def process_image_mask(
+    image: tf.float32,
+    mask: tf.float32,
+) -> tuple:  # type: ignore[type-arg]
+    image = tf.image.resize(image[..., tf.newaxis], (256, 256))
+    image = image / 4095
+    mask = tf.image.resize(mask[..., tf.newaxis], (256, 256), method="nearest")
+    mask = tf.cast(mask, tf.int32)
+    mask = to_categorical(mask, num_classes=3)
+    return (image, mask)
+
+
+def preprocess(
+    images: tf.float32,
+    masks: tf.float32,
+) -> tuple:  # type: ignore[type-arg]
+    images, masks = tf.numpy_function(
+        process_image_mask,
+        [images, masks],
+        [tf.float32, tf.float32],
+    )
+    images.set_shape([256, 256, 1])
+    masks.set_shape([256, 256, 3])
+    return (images, masks)
+
+
 def main() -> None:
     bin_file_path = Path("bin")
     if not bin_file_path.exists():
@@ -348,32 +374,6 @@ def main() -> None:
         if dist_path.exists():
             rmtree(dist_path)
         move("bin/tfjs", "dist")
-
-
-def preprocess(
-    images: tf.float32,
-    masks: tf.float32,
-) -> tuple:  # type: ignore[type-arg]
-    images, masks = tf.numpy_function(
-        process_image_mask,
-        [images, masks],
-        [tf.float32, tf.float32],
-    )
-    images.set_shape([256, 256, 1])
-    masks.set_shape([256, 256, 3])
-    return (images, masks)
-
-
-def process_image_mask(
-    image: tf.float32,
-    mask: tf.float32,
-) -> tuple:  # type: ignore[type-arg]
-    image = tf.image.resize(image[..., tf.newaxis], (256, 256))
-    image = image / 4095
-    mask = tf.image.resize(mask[..., tf.newaxis], (256, 256), method="nearest")
-    mask = tf.cast(mask, tf.int32)
-    mask = to_categorical(mask, num_classes=3)
-    return (image, mask)
 
 
 if __name__ == "__main__":
