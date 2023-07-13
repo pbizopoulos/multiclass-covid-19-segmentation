@@ -10,9 +10,8 @@ import numpy as np
 import requests
 import tensorflow as tf
 import tensorflowjs as tfjs
-from keras.utils.np_utils import to_categorical
-from tensorflow import keras
-from tensorflow.keras.layers import (
+from keras import optimizers
+from keras.layers import (
     BatchNormalization,
     Conv2D,
     Conv2DTranspose,
@@ -21,7 +20,8 @@ from tensorflow.keras.layers import (
     MaxPooling2D,
     concatenate,
 )
-from tensorflow.keras.models import Model
+from keras.models import Model
+from keras.utils import to_categorical
 
 
 def data_generator_1(index_range: range) -> tuple:  # type: ignore[type-arg]
@@ -353,7 +353,7 @@ def main() -> None:
     classes_num = 3
     model = get_model(classes_num, img_size)
     model.compile(
-        optimizer=keras.optimizers.Adam(learning_rate=0.001),
+        optimizer=optimizers.Adam(learning_rate=0.001),
         loss="categorical_crossentropy",
         metrics="accuracy",
     )
