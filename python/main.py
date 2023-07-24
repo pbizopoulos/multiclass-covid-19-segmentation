@@ -1,5 +1,4 @@
 from glob import glob
-from os import environ
 from pathlib import Path
 from shutil import move, rmtree
 from zipfile import ZipFile
@@ -336,7 +335,7 @@ def main() -> None:
     tf.config.experimental.enable_op_determinism()
     epochs_num = 100
     index_range = range(100)
-    if environ["DEBUG"] == "1":
+    if __debug__:
         epochs_num = 10
         index_range = range(10)
     [images, masks] = data_generator_1(index_range)
@@ -363,7 +362,7 @@ def main() -> None:
         rmtree(tfjs_path)
     tfjs_path.mkdir(exist_ok=True)
     tfjs.converters.save_keras_model(model, tfjs_path)
-    if environ["DEBUG"] != "1":
+    if not __debug__:
         dist_path = Path("dist")
         if dist_path.exists():
             rmtree(dist_path)
