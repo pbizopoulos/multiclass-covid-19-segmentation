@@ -1,4 +1,3 @@
-from glob import glob
 from pathlib import Path
 from shutil import move, rmtree
 from zipfile import ZipFile
@@ -65,14 +64,14 @@ def data_generator_2(index_volume: int) -> tuple:  # type: ignore[type-arg]
             gdown.download(url, zip_file_path.as_posix(), quiet=False)
             with ZipFile(zip_file_path, "r") as zip_file:
                 zip_file.extractall("tmp")
-    image_file_paths = sorted(glob("tmp/rp_im/*.nii.gz"))
+    image_file_paths = sorted(Path("tmp/rp_im/").glob("*.nii.gz"))
     images = nib.load(image_file_paths[index_volume])  # type: ignore[attr-defined]
     images = images.get_fdata()
     images = np.moveaxis(images, -1, 0)
-    mask_lesions_file_paths = sorted(glob("tmp/rp_msk/*.nii.gz"))
+    mask_lesions_file_paths = sorted(Path("tmp/rp_msk/").glob("*.nii.gz"))
     mask_lesions = nib.load(mask_lesions_file_paths[index_volume])  # type: ignore[attr-defined] # noqa: E501
     mask_lesions = mask_lesions.get_fdata()
-    mask_lungs_file_paths = sorted(glob("tmp/rp_lung_msk/*.nii.gz"))
+    mask_lungs_file_paths = sorted(Path("tmp/rp_lung_msk/").glob("*.nii.gz"))
     mask_lungs = nib.load(mask_lungs_file_paths[index_volume])  # type: ignore[attr-defined] # noqa: E501
     mask_lungs = mask_lungs.get_fdata()
     mask_lungs[mask_lungs == 2] = 1  # noqa: PLR2004
@@ -98,13 +97,13 @@ def data_generator_3(index_range: range) -> tuple:  # type: ignore[type-arg]
             with ZipFile(zip_file_path, "r") as zip_file:
                 zip_file.extractall(f"tmp/{file_name}")
     images = np.array([]).reshape(512, 512, 0)
-    for file_path in glob("tmp/COVID-19-CT-Seg_20cases/*.nii.gz"):
+    for file_path in Path("tmp/COVID-19-CT-Seg_20cases/").glob("*.nii.gz"):
         images_ = nib.load(file_path)  # type: ignore[attr-defined]
         images_ = np.resize(images_.get_fdata(), (512, 512, images_.shape[-1]))
         images = np.concatenate((images, images_), 2)
     images = images[..., index_range]
     mask_lesions = np.array([]).reshape(512, 512, 0)
-    for file_path in glob("tmp/Infection_Mask/*.nii.gz"):
+    for file_path in Path("tmp/Infection_Mask/").glob("*.nii.gz"):
         mask_lesions_ = nib.load(file_path)  # type: ignore[attr-defined]
         mask_lesions_ = np.resize(
             mask_lesions_.get_fdata(),
@@ -113,7 +112,7 @@ def data_generator_3(index_range: range) -> tuple:  # type: ignore[type-arg]
         mask_lesions = np.concatenate((mask_lesions, mask_lesions_), 2)
     mask_lesions = mask_lesions[..., index_range]
     mask_lungs = np.array([]).reshape(512, 512, 0)
-    for file_path in glob("tmp/Lung_Mask/*.nii.gz"):
+    for file_path in Path("tmp/Lung_Mask/").glob("*.nii.gz"):
         mask_lungs_ = nib.load(file_path)  # type: ignore[attr-defined]
         mask_lungs_ = np.resize(
             mask_lungs_.get_fdata(),
