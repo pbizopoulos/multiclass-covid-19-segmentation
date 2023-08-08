@@ -6,7 +6,12 @@ Git
 Docker
 NVIDIA Container Toolkit (Optional)
 
-# Download, check and build
+# Download
 git clone https://github.com/pbizopoulos/multiclass-covid-19-segmentation-tensorflow
 cd multiclass-covid-19-segmentation-tensorflow/
+
+# Development
 cd python/ && make clean check all && cd ..
+
+# Staging
+cd python/ && make DEBUG=0
