@@ -29,7 +29,7 @@ def data_generator_1(index_range: range) -> tuple:  # type: ignore[type-arg]
         "https://drive.google.com/uc?id=1zj4N_KV0LBko1VSQ7FPZ38eaEGNU0K6-",
     ]
     file_names = ["tr_im.nii.gz", "tr_mask.nii.gz", "tr_lungmasks_updated.nii.gz"]
-    for url, file_name in zip(urls, file_names):  # noqa: B905
+    for url, file_name in zip(urls, file_names):
         file_name_path = Path(f"tmp/{file_name}")
         if not file_name_path.is_file():
             gdown.download(url, file_name_path.as_posix(), quiet=False)
@@ -58,7 +58,7 @@ def data_generator_2(index_volume: int) -> tuple:  # type: ignore[type-arg]
         "https://drive.google.com/uc?id=1MIp89YhuAKh4as2v_5DUoExgt6-y3AnH",
     ]
     file_names = ["rp_im.zip", "rp_msk.zip", "rp_lung_msk.zip"]
-    for url, file_name in zip(urls, file_names):  # noqa: B905
+    for url, file_name in zip(urls, file_names):
         zip_file_path = Path(f"tmp/{file_name}")
         if not zip_file_path.is_file():
             gdown.download(url, zip_file_path.as_posix(), quiet=False)
@@ -88,7 +88,7 @@ def data_generator_3(index_range: range) -> tuple:  # type: ignore[type-arg]
         "https://zenodo.org/record/3757476/files/Lung_Mask.zip?download=1",
     ]
     file_names = ["COVID-19-CT-Seg_20cases", "Infection_Mask", "Lung_Mask"]
-    for url, file_name in zip(urls, file_names):  # noqa: B905
+    for url, file_name in zip(urls, file_names):
         zip_file_path = Path(f"tmp/{file_name}.zip")
         if not zip_file_path.is_file():
             response = requests.get(url, timeout=60)
