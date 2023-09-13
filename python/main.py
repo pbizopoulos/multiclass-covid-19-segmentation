@@ -362,10 +362,10 @@ def main() -> None:
     tfjs_path.mkdir(exist_ok=True)
     tfjs.converters.save_keras_model(model, tfjs_path)
     if not __debug__:
-        dist_path = Path("dist")
-        if dist_path.exists():
-            rmtree(dist_path)
-        move("tmp/tfjs", "dist")
+        output_path = Path("prod")
+        if output_path.exists():
+            rmtree(output_path)
+        move("tmp/tfjs", "prod")
 
 
 if __name__ == "__main__":
