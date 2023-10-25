@@ -69,10 +69,10 @@ def data_generator_2(index_volume: int) -> tuple:  # type: ignore[type-arg]
     images = images.get_fdata()
     images = np.moveaxis(images, -1, 0)
     mask_lesions_file_paths = sorted(Path("tmp/rp_msk/").glob("*.nii.gz"))
-    mask_lesions = nib.load(mask_lesions_file_paths[index_volume])  # type: ignore[attr-defined] # noqa: E501
+    mask_lesions = nib.load(mask_lesions_file_paths[index_volume])  # type: ignore[attr-defined]
     mask_lesions = mask_lesions.get_fdata()
     mask_lungs_file_paths = sorted(Path("tmp/rp_lung_msk/").glob("*.nii.gz"))
-    mask_lungs = nib.load(mask_lungs_file_paths[index_volume])  # type: ignore[attr-defined] # noqa: E501
+    mask_lungs = nib.load(mask_lungs_file_paths[index_volume])  # type: ignore[attr-defined]
     mask_lungs = mask_lungs.get_fdata()
     mask_lungs[mask_lungs == 2] = 1  # noqa: PLR2004
     masks = mask_lungs
