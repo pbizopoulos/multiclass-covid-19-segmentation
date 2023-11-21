@@ -1,4 +1,4 @@
-# Multiclass COVID-19 segmentation tensorflow
+# Multiclass COVID-19 segmentation
 
 # Requirements
 POSIX Utilities
@@ -7,8 +7,8 @@ Docker
 NVIDIA Container Toolkit (Optional)
 
 # Download
-git clone https://github.com/pbizopoulos/multiclass-covid-19-segmentation-tensorflow
-cd multiclass-covid-19-segmentation-tensorflow/
+git clone https://github.com/pbizopoulos/multiclass-covid-19-segmentation
+cd multiclass-covid-19-segmentation/
 
 # Development
 cd python/ && make clean check all && cd ..
