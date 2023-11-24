@@ -1,3 +1,4 @@
+from os import getenv
 from pathlib import Path
 from shutil import move, rmtree
 from zipfile import ZipFile
@@ -332,9 +333,10 @@ def preprocess(
 def main() -> None:
     tf.keras.utils.set_random_seed(1)
     tf.config.experimental.enable_op_determinism()
-    epochs_num = 100
-    index_range = range(100)
-    if __debug__:
+    if getenv("STAGING"):
+        epochs_num = 100
+        index_range = range(100)
+    else:
         epochs_num = 10
         index_range = range(10)
     [images, masks] = data_generator_1(index_range)
@@ -361,7 +363,7 @@ def main() -> None:
         rmtree(tfjs_path)
     tfjs_path.mkdir(exist_ok=True)
     tfjs.converters.save_keras_model(model, tfjs_path)
-    if not __debug__:
+    if getenv("STAGING"):
         output_path = Path("prm/model/")
         if output_path.exists():
             rmtree(output_path)

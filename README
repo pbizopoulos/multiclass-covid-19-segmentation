@@ -14,5 +14,5 @@ cd multiclass-covid-19-segmentation/
 cd python/ && make clean check all && cd ..
 
 # Staging
-cd python/ && make DEBUG=0
+cd python/ && make STAGING=1
 
