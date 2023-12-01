@@ -36,18 +36,18 @@ def data_generator_1(index_range: range) -> tuple:  # type: ignore[type-arg]
             gdown.download(url, file_name_path.as_posix(), quiet=False)
     images_file_path = "tmp/tr_im.nii.gz"
     images = nib.load(images_file_path)  # type: ignore[attr-defined]
-    images = images.get_fdata()[..., index_range]
-    images = np.moveaxis(images, -1, 0)
+    images = images.get_fdata()[..., index_range]  # type: ignore[attr-defined]
+    images = np.moveaxis(images, -1, 0)  # type: ignore[arg-type,assignment]
     mask_lesions_file_path = "tmp/tr_mask.nii.gz"
     mask_lesions = nib.load(mask_lesions_file_path)  # type: ignore[attr-defined]
-    mask_lesions = mask_lesions.get_fdata()[..., index_range]
+    mask_lesions = mask_lesions.get_fdata()[..., index_range]  # type: ignore[attr-defined]
     mask_lungs_file_path = "tmp/tr_lungmasks_updated.nii.gz"
     mask_lungs = nib.load(mask_lungs_file_path)  # type: ignore[attr-defined]
-    mask_lungs = mask_lungs.get_fdata()[..., index_range]
-    mask_lungs[mask_lungs == 2] = 1  # noqa: PLR2004
+    mask_lungs = mask_lungs.get_fdata()[..., index_range]  # type: ignore[attr-defined]
+    mask_lungs[mask_lungs == 2] = 1  # type: ignore[comparison-overlap,index] # noqa: PLR2004
     masks = mask_lungs
-    masks[mask_lesions == 1] = 2
-    masks = np.moveaxis(masks, -1, 0)
+    masks[mask_lesions == 1] = 2  # type: ignore[comparison-overlap,index]
+    masks = np.moveaxis(masks, -1, 0)  # type: ignore[arg-type,assignment]
     return (images, masks)
 
 
@@ -67,18 +67,18 @@ def data_generator_2(index_volume: int) -> tuple:  # type: ignore[type-arg]
                 zip_file.extractall("tmp")
     image_file_paths = sorted(Path("tmp/rp_im/").glob("*.nii.gz"))
     images = nib.load(image_file_paths[index_volume])  # type: ignore[attr-defined]
-    images = images.get_fdata()
-    images = np.moveaxis(images, -1, 0)
+    images = images.get_fdata()  # type: ignore[attr-defined]
+    images = np.moveaxis(images, -1, 0)  # type: ignore[arg-type,assignment]
     mask_lesions_file_paths = sorted(Path("tmp/rp_msk/").glob("*.nii.gz"))
     mask_lesions = nib.load(mask_lesions_file_paths[index_volume])  # type: ignore[attr-defined]
-    mask_lesions = mask_lesions.get_fdata()
+    mask_lesions = mask_lesions.get_fdata()  # type: ignore[attr-defined]
     mask_lungs_file_paths = sorted(Path("tmp/rp_lung_msk/").glob("*.nii.gz"))
     mask_lungs = nib.load(mask_lungs_file_paths[index_volume])  # type: ignore[attr-defined]
-    mask_lungs = mask_lungs.get_fdata()
-    mask_lungs[mask_lungs == 2] = 1  # noqa: PLR2004
+    mask_lungs = mask_lungs.get_fdata()  # type: ignore[attr-defined]
+    mask_lungs[mask_lungs == 2] = 1  # type: ignore[comparison-overlap,index] # noqa: PLR2004
     masks = mask_lungs
-    masks[mask_lesions == 1] = 2
-    masks = np.moveaxis(masks, -1, 0)
+    masks[mask_lesions == 1] = 2  # type: ignore[comparison-overlap,index]
+    masks = np.moveaxis(masks, -1, 0)  # type: ignore[arg-type,assignment]
     return (images, masks)
 
 
@@ -100,26 +100,26 @@ def data_generator_3(index_range: range) -> tuple:  # type: ignore[type-arg]
     images = np.array([]).reshape(512, 512, 0)
     for file_path in Path("tmp/COVID-19-CT-Seg_20cases/").glob("*.nii.gz"):
         images_ = nib.load(file_path)  # type: ignore[attr-defined]
-        images_ = np.resize(images_.get_fdata(), (512, 512, images_.shape[-1]))
-        images = np.concatenate((images, images_), 2)
+        images_ = np.resize(images_.get_fdata(), (512, 512, images_.shape[-1]))  # type: ignore[assignment,attr-defined]
+        images = np.concatenate((images, images_), 2)  # type: ignore[arg-type]
     images = images[..., index_range]
     mask_lesions = np.array([]).reshape(512, 512, 0)
     for file_path in Path("tmp/Infection_Mask/").glob("*.nii.gz"):
         mask_lesions_ = nib.load(file_path)  # type: ignore[attr-defined]
-        mask_lesions_ = np.resize(
-            mask_lesions_.get_fdata(),
-            (512, 512, mask_lesions_.shape[-1]),
+        mask_lesions_ = np.resize(  # type: ignore[assignment]
+            mask_lesions_.get_fdata(),  # type: ignore[attr-defined]
+            (512, 512, mask_lesions_.shape[-1]),  # type: ignore[attr-defined]
         )
-        mask_lesions = np.concatenate((mask_lesions, mask_lesions_), 2)
+        mask_lesions = np.concatenate((mask_lesions, mask_lesions_), 2)  # type: ignore[arg-type]
     mask_lesions = mask_lesions[..., index_range]
     mask_lungs = np.array([]).reshape(512, 512, 0)
     for file_path in Path("tmp/Lung_Mask/").glob("*.nii.gz"):
         mask_lungs_ = nib.load(file_path)  # type: ignore[attr-defined]
-        mask_lungs_ = np.resize(
-            mask_lungs_.get_fdata(),
+        mask_lungs_ = np.resize(  # type: ignore[assignment]
+            mask_lungs_.get_fdata(),  # type: ignore[attr-defined]
             (512, 512, mask_lungs.shape[-1]),
         )
-        mask_lungs = np.concatenate((mask_lungs, mask_lungs_), 2)
+        mask_lungs = np.concatenate((mask_lungs, mask_lungs_), 2)  # type: ignore[arg-type]
     mask_lungs = mask_lungs[..., index_range]
     mask_lungs[mask_lungs == 2] = 1  # noqa: PLR2004
     masks = mask_lungs
