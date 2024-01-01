@@ -2,7 +2,7 @@
 dependencies = [
   "gdown==4.7.1",
   "nibabel==5.2.0",
-  "tensorflowjs==4.14.0"
+  "tensorflowjs==4.15.0"
 ]
 name = "UNKNOWN"
 version = "0.0.0"
