@@ -1,0 +1,18 @@
+# Multiclass COVID-19 segmentation
+
+# Requirements
+POSIX Shell & Utilities
+Git
+Docker
+NVIDIA Container Toolkit (Optional)
+
+# Download
+git clone https://github.com/pbizopoulos/multiclass-covid-19-segmentation $HOME/github.com/pbizopoulos/multiclass-covid-19-segmentation
+cd $HOME/github.com/pbizopoulos/multiclass-covid-19-segmentation/
+
+# Development
+cd python/ && make clean check all && cd ..
+
+# Staging
+cd python/ && make STAGING=1
+
